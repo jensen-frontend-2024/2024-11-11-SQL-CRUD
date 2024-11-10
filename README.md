@@ -8,8 +8,8 @@
   - [WHERE & AND & OR](#where--and--or)
   - [ORDER BY & DESC & ASC](#order-by--desc--asc)
   - [LIKE](#like)
-  - [JOIN](#join-sätta-ihop-flera-tabeller-till-ett-sökresultat)
-  - [CRUD](#crud)
+- [JOIN](#join-sätta-ihop-flera-tabeller-till-ett-sökresultat)
+- [CRUD](#crud)
 
 </details>
 
