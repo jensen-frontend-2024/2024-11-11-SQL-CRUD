@@ -9,7 +9,21 @@
   - [ORDER BY & DESC & ASC](#order-by--desc--asc)
   - [LIKE](#like)
 - [JOIN](#join-sätta-ihop-flera-tabeller-till-ett-sökresultat)
+  - [INNER JOIN](#inner-join)
+  - [Användning av COUNT tillsammans med en JOIN](#användning-av-count-tillsammans-med-en-join)
+  - [LEFT JOIN](#left-join)
+  - [Jämförelse mellan INNER JOIN och en LEFT JOIN](#jämförelse-mellan-inner-join-och-en-left-join)
+  - [Join med tabeller som har m-m-relation](#join-med-tabeller-som-har-m-m-relation)
 - [CRUD](#crud)
+  - [CREATE](#create)
+  - [UPDATE](#update)
+  - [DELETE](#delete)
+- [Normalisering](#normalisering)
+  - [Första Normalformen (1NF)](#första-normalformen-1nf)
+  - [Andra Normalformen (2NF)](#andra-normalformen-2nf)
+  - [Tredje Normalformen (3NF)](#tredje-normalformen-3nf)
+  - [Sammanfattning av Normalformerna](#sammanfattning-av-normalformerna)
+  - [För mer läsning om normalisering](#för-mer-läsning-om-normalisering)
 
 </details>
 
@@ -34,7 +48,7 @@ LIMIT 100
 
 Nu inkluderas endast tre kolumner i resultatet och endast de 100 första raderna.
 
-- [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ### WHERE & AND & OR
 
@@ -49,7 +63,7 @@ I detta fall, kommer alla users med namnet "Niklas" eller adressen "Drottninggat
 
 Man kan kombinera flera "AND" med flera "OR" men i det fallet så kanske "LIKE" passar bättre. Men allt beror situationen givitvis.
 
-- [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ### ORDER BY & DESC & ASC
 
@@ -57,7 +71,7 @@ ORDER BY är ett sorteringsnyckelord som används för att sortera resultatet ef
 
 Tänk på att sortering på db-nivå är mycket effektivere än att hämta en större mängd data för att sen sortera den i frontend.
 
-- [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ### LIKE
 
@@ -87,7 +101,7 @@ Det andra specialtecknet vi kan använda var "\_". Understräck används för sp
 
 - "m\_\_a" - mata, meta, mala, måla osv. Allt är matchingar du vi specifkt anger två okända tecken.
 
-- [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ## JOIN, Sätta ihop flera tabeller till ett sökresultat.
 
@@ -95,9 +109,13 @@ En join-operation används för att kombinera data från två eller flera olika 
 
 Det finns olika typer av join inom ramen av SQL, bland annat: inner join, left join, right join, cross join och outer join. De vi kommer att fokusera på är inner join _( även kallad join i sqlite )_ och left join.
 
-### Inner Join _( join )_
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
-JOIN är ett nyckelord som kopplar ihop två tabeller. Vi kan koppla ihop flera men då måste vi använda flera JOIN efter varandra, så vi startar med två helt enkelt. Hur de kopplas när man använder en join _( inner join )_ är att endast rader som har en matchning i båda tabellerna inkluderas. I exemplet "teachers" och "courses" så innebär det att endast "courses" som har en lärarer kopplat till sig kommer att inkluderas. Det skulle kunna finnas "courses" som inte har en lärar för tillfället, de kommer då att ignoreras i slutresultatet.
+### Inner Join
+
+_( join )_
+
+INNERN JOIN eller JOIN är ett nyckelord som kopplar ihop två tabeller. Vi kan koppla ihop flera men då måste vi använda flera JOIN efter varandra, så vi startar med två helt enkelt. Hur de kopplas när man använder en join _( inner join )_ är att endast rader som har en matchning i båda tabellerna inkluderas. I exemplet "teachers" och "courses" så innebär det att endast "courses" som har en lärarer kopplat till sig kommer att inkluderas. Det skulle kunna finnas "courses" som inte har en lärar för tillfället, de kommer då att ignoreras i slutresultatet.
 
 Syntax:
 
@@ -125,6 +143,8 @@ FROM tracks
 JOIN albums ON tracks.AlbumId = albums.AlbumId
 ```
 
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
 ### Användning av COUNT tillsammans med en JOIN
 
 Vad är count? Det är en aggregeringsfunktion som används för att räkna ut antalet rader som matchar ett givet villkor.
@@ -138,6 +158,8 @@ JOIN tracks ON albums.AlbumId = tracks.AlbumId
 ```
 
 Denna query räknar antalet spår för varje album. En join i det här fallet _( inner join )_ säklerställer att endast album med spår inkluderad finns i resultatet.
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ### LEFT JOIN
 
@@ -163,11 +185,17 @@ Queryn hämtar alla artister och deras tillhärande albumtitlar. Om en artis in 
 
 Användninsområde för detta är helt enkelt när man vill inkludera alla rader från en tabell även om vissa inte har motsvarande data i den andra tabellen.
 
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
 ### Jämförelse mellan INNER JOIN och en LEFT JOIN
 
 - INNER JOIN: retunerar endast rader med matchande data i båda tabellerna
 
 - LEFT JOIN: Retunerar alla rader från den vänstra tabellen, även om det inte finns någon matchning i den högra tabellen. _( matchande data från de nhögra tabellen inkluderas om den finns, annars NULL )_
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+### Join med tabeller som har m-m-relation
 
 En JOIN som vi har gjort ovan har endast varit på tabeller som har någon form av 1-många-relation med varandra. Men JOIN funkar självklart på många-till-många-relationer också. Skillnade är då att vi har korstabell som vi måste inkludera i vår join-query. Så det blir det alltid en liten extra-join vi måste göra.
 
@@ -183,7 +211,7 @@ WHERE students.student_id = 2
 
 Vi gör helt enkelt en extra join på korstabellen innan vi kan göra en join på "courses".
 
-- [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ## CRUD
 
@@ -193,6 +221,8 @@ Men det står för CREATE, READ, UPDATE och DELETE.
 De står helt enkelt för de fyra grundläggande operationerna du kan göra mot en databas.
 
 READ har vi jobbat med en del redan. Allt som har med någon form av SELECT att göra är en typ utan READ som sker mot databasen.
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ### CREATE
 
@@ -234,6 +264,8 @@ VALUES ("Rock again", 1), ("Metal Rock", 1), ("Let there be ROCK AGAIN", 1);
 
 Glöm inte, ordningen på kolumnspecifikation måste vara samma som ordningen på värdena innuti varje VALUES-parantes.
 
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
 ### UPDATE
 
 UPDATE används helt enkelt till att uppdatera en befintlig rad i en redan existerand tabell.
@@ -258,6 +290,8 @@ WHERE CustomerId = 5
 
 Ovan uppdatera värdet på Country-kolumnen till "Finland" på kunden som har CustomerId 5.
 
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
 ### DELETE
 
 Delete innebär att ta bort rader från en specifik tabell.
@@ -279,3 +313,138 @@ WHERE AlbumId = 348
 ```
 
 Detta kommer ta bort raden där villkoret AlbumId = 348 är sant.
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+## Normalisering
+
+### Vad är Normalisering?
+
+- **Definition:**  
+  Normalisering är en process för att organisera data i en databas så att redundans minimeras och dataintegriteten förbättras. Det innebär att dela upp data i mindre, relaterade tabeller och definiera relationer mellan dem.
+
+  [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+---
+
+### Första Normalformen (1NF)
+
+- **Regler för 1NF:**
+  - Varje kolumn måste ha atomära (odelbara) värden.
+  - Ingen kolumn får innehålla flera värden eller upprepade grupper.
+
+#### Exempel på en tabell som inte är i 1NF
+
+| CustomerId | CustomerName | PurchasedTracks        |
+| ---------- | ------------ | ---------------------- |
+| 1          | Alice        | Track1, Track2         |
+| 2          | Bob          | Track3, Track4, Track5 |
+
+- **Problem:** Kolumnen `PurchasedTracks` innehåller flera värden.
+
+#### Tabell normaliserad till 1NF
+
+| CustomerId | CustomerName | PurchasedTrack |
+| ---------- | ------------ | -------------- |
+| 1          | Alice        | Track1         |
+| 1          | Alice        | Track2         |
+| 2          | Bob          | Track3         |
+| 2          | Bob          | Track4         |
+| 2          | Bob          | Track5         |
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+---
+
+### Andra Normalformen (2NF)
+
+- **Regler för 2NF:**
+  - Tabellen måste vara i 1NF.
+  - Alla icke-nyckelattribut måste vara **fullt funktionellt beroende** av hela den primära nyckeln.
+
+#### Exempel på en tabell som är i 1NF men inte i 2NF
+
+| CustomerId | PurchasedTrack | CustomerName |
+| ---------- | -------------- | ------------ |
+| 1          | Track1         | Alice        |
+| 1          | Track2         | Alice        |
+| 2          | Track3         | Bob          |
+| 2          | Track4         | Bob          |
+| 2          | Track5         | Bob          |
+
+- **Problem:** Kolumnen `CustomerName` är beroende av `CustomerId` och inte av den fulla sammansatta nyckeln (`CustomerId, PurchasedTrack`). Detta innebär att vi har ett partiellt beroende.
+
+#### Tabell normaliserad till 2NF
+
+**Tabell 1: Customers**
+| CustomerId | CustomerName |
+|------------|--------------|
+| 1 | Alice |
+| 2 | Bob |
+
+**Tabell 2: PurchasedTracks**
+| CustomerId | PurchasedTrack |
+|------------|----------------|
+| 1 | Track1 |
+| 1 | Track2 |
+| 2 | Track3 |
+| 2 | Track4 |
+| 2 | Track5 |
+
+- **Förklaring:** Vi har separerat kundinformation till `Customers`-tabellen och skapat en ny tabell `PurchasedTracks` för att hantera köpta spår. Nu är varje icke-nyckelattribut beroende av hela primärnyckeln.
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+---
+
+### Tredje Normalformen (3NF)
+
+- **Regler för 3NF:**
+  - Tabellen måste vara i 2NF.
+  - Alla icke-nyckelattribut måste vara direkt beroende av primärnyckeln och inte av andra icke-nyckelattribut (inga **transitiva beroenden**).
+
+#### Exempel på en tabell som är i 2NF men inte i 3NF
+
+| CustomerId | CustomerName | CustomerCity |
+| ---------- | ------------ | ------------ |
+| 1          | Alice        | New York     |
+| 2          | Bob          | Los Angeles  |
+
+- **Problem:** `CustomerCity` är beroende av `CustomerName` snarare än direkt av `CustomerId`. Detta skapar ett transitivt beroende.
+
+#### Tabell normaliserad till 3NF
+
+**Tabell 1: Customers**
+| CustomerId | CustomerName | CityId |
+|------------|--------------|--------|
+| 1 | Alice | 1 |
+| 2 | Bob | 2 |
+
+**Tabell 2: Cities**
+| CityId | CustomerCity |
+|--------|--------------|
+| 1 | New York |
+| 2 | Los Angeles |
+
+- **Förklaring:** Vi har skapat en ny tabell `Cities` och använt `CityId` som en referens för att undvika det transitiva beroendet. Nu är alla icke-nyckelattribut direkt beroende av den primära nyckeln `CustomerId`.
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+---
+
+### Sammanfattning av Normalformerna
+
+- **1NF:** Inga upprepade grupper eller listor, alla kolumner ska ha atomära värden.
+- **2NF:** Eliminerar partiella beroenden (alla icke-nyckelattribut måste bero på hela primärnyckeln).
+- **3NF:** Eliminerar transitiva beroenden (alla icke-nyckelattribut måste vara direkt beroende av primärnyckeln).
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
+
+### För mer läsning om normalisering
+
+Här har ni en länk som i detalj förklar upp till den femte normalformen.
+
+[A Simple Guide to Five Normal Forms in Relational Database Theory
+](https://www.bkent.net/Doc/simple5.htm)
+
+[Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
