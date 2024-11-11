@@ -141,6 +141,50 @@ Denna query räknar antalet spår för varje album. En join i det här fallet _(
 
 ### LEFT JOIN
 
+LEFT JOIN retunerar alla rader från den vänstra _( första )_ tabellen och matchande rader från den högra tabellen. Om det inte finns någon matchning fylls kolumnera från den högra tabellen med NULL.
+
+Syntax:
+
+```sql
+SELECT kolumn1, kolumn2 kolumnN..
+FROM tabell1
+LEFT JOIN tabell2 ON tabell1.kolumn = tabell2.kolumn
+```
+
+Exempel, lista alla artiser och deras album _( även om de inte har några album )_
+
+```sql
+SELECT artists.Name AS ArtistName, albums.Title AS AlbumTitle
+FROM artists
+LEFT JOIN albums ON artists.ArtistId = albums.ArtistId
+```
+
+Queryn hämtar alla artister och deras tillhärande albumtitlar. Om en artis in har något album, returneras NULL för albumtiteln.
+
+Användninsområde för detta är helt enkelt när man vill inkludera alla rader från en tabell även om vissa inte har motsvarande data i den andra tabellen.
+
+### Jämförelse mellan INNER JOIN och en LEFT JOIN
+
+- INNER JOIN: retunerar endast rader med matchande data i båda tabellerna
+
+- LEFT JOIN: Retunerar alla rader från den vänstra tabellen, även om det inte finns någon matchning i den högra tabellen. _( matchande data från de nhögra tabellen inkluderas om den finns, annars NULL )_
+
+En JOIN som vi har gjort ovan har endast varit på tabeller som har någon form av 1-många-relation med varandra. Men JOIN funkar självklart på många-till-många-relationer också. Skillnade är då att vi har korstabell som vi måste inkludera i vår join-query. Så det blir det alltid en liten extra-join vi måste göra. 
+
+Om vi går tillbaks till test-database vi gjorde innan så hade vi tabellerna "students", "courses" och "studentXcourses" som var en korstabell. En join för att ta fram vilka kurser en elev läste kan se ut såhär:
+
+```sql
+SELECT students.first_name, students.last_name, courses.name
+FROM students
+JOIN studentsXcourses ON students.student_id = studentsXcourses.student_id
+JOIN courses ON studentsXcourses.course_id = courses.course_id
+WHERE students.student_id = 2
+```
+
+Vi gör helt enkelt en extra join på korstabellen innan vi kan göra en join på "courses".
+
 - [Tillbaks till toppen](#2024-11-11-sql-repetition-och-crud)
 
 ## CRUD
+
+
