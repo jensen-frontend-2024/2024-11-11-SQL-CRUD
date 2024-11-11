@@ -169,7 +169,7 @@ Användninsområde för detta är helt enkelt när man vill inkludera alla rader
 
 - LEFT JOIN: Retunerar alla rader från den vänstra tabellen, även om det inte finns någon matchning i den högra tabellen. _( matchande data från de nhögra tabellen inkluderas om den finns, annars NULL )_
 
-En JOIN som vi har gjort ovan har endast varit på tabeller som har någon form av 1-många-relation med varandra. Men JOIN funkar självklart på många-till-många-relationer också. Skillnade är då att vi har korstabell som vi måste inkludera i vår join-query. Så det blir det alltid en liten extra-join vi måste göra. 
+En JOIN som vi har gjort ovan har endast varit på tabeller som har någon form av 1-många-relation med varandra. Men JOIN funkar självklart på många-till-många-relationer också. Skillnade är då att vi har korstabell som vi måste inkludera i vår join-query. Så det blir det alltid en liten extra-join vi måste göra.
 
 Om vi går tillbaks till test-database vi gjorde innan så hade vi tabellerna "students", "courses" och "studentXcourses" som var en korstabell. En join för att ta fram vilka kurser en elev läste kan se ut såhär:
 
@@ -187,4 +187,95 @@ Vi gör helt enkelt en extra join på korstabellen innan vi kan göra en join p�
 
 ## CRUD
 
+Vad är CRUD?
 
+Men det står för CREATE, READ, UPDATE och DELETE.
+De står helt enkelt för de fyra grundläggande operationerna du kan göra mot en databas.
+
+READ har vi jobbat med en del redan. Allt som har med någon form av SELECT att göra är en typ utan READ som sker mot databasen.
+
+### CREATE
+
+Vad det innebär kort och gott att vi lägger till en rad i en tabell i vår databas.
+
+Syntax:
+
+```sql
+INSERT INTO  table_name (column1, column2, columnN..)
+VALUES (value1, value2, valueN..)
+```
+
+Nya nyckelord men det vi ska ta med oss är att ordningen i parantesen för kolumner måste vara samma som ordningen i parantesen för VALUES.
+
+Låt oss ta ett exempel med chinook. Lägg till en ny kund i "customers".
+
+```sql
+INSERT INTO customers (FirstName, LastName, Country, Email)
+VALUES ("Niklas", "Fähnrich", "Sweden", "niklas@niklas.se")
+```
+
+Denna query lägger till en ny rad i tabellen "customers" med de värdena som är inskrivna på respektive kolumn.
+
+Ett annat exempel, läg till ett nytt album i "albums" med namnet "My new album" och den ska kopplas till en specifik artist med id "1".
+
+```sql
+INSERT INTO albums (Title, ArtistId)
+VALUES ("My new album", 1)
+```
+
+Här lägger vi till ett nyt album med ett specifikt namn och kopplar det till en specifik artist.
+
+Du kan lägga till flera rader på en gång. Det du behöver göra då är att kommaseparera values-paranteserna och lägga in nya värden fr varje.
+
+```sql
+INSERT INTO albums (Title, ArtistId)
+VALUES ("Rock again", 1), ("Metal Rock", 1), ("Let there be ROCK AGAIN", 1);
+```
+
+Glöm inte, ordningen på kolumnspecifikation måste vara samma som ordningen på värdena innuti varje VALUES-parantes.
+
+### UPDATE
+
+UPDATE används helt enkelt till att uppdatera en befintlig rad i en redan existerand tabell.
+
+Syntax:
+
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, columnN = valueN..
+WHERE "condition"
+```
+
+OBS!!! Om WHERE utelämnas så kommer ALLA rader i databasen att uppdateras, och det vill ni inte...
+
+Exempel: Uppdatera ett land på en specifik kund i chinook.
+
+```sql
+UPDATE customers
+SET Country = "Finland"
+WHERE CustomerId = 5
+```
+
+Ovan uppdatera värdet på Country-kolumnen till "Finland" på kunden som har CustomerId 5.
+
+### DELETE
+
+Delete innebär att ta bort rader från en specifik tabell.
+
+Syntax:
+
+```sql
+DELETE FROM table_name
+WHERE "condition"
+```
+
+OBS! Missar att skriva ett giltig villkor så kommer det att radera ALLA rader.
+
+Exempel: Ta bort en ett album från "albums" och vi tar bort ett album som vi tidigare har skapat.
+
+```sql
+DELETE FROM albums
+WHERE AlbumId = 348
+```
+
+Detta kommer ta bort raden där villkoret AlbumId = 348 är sant.
